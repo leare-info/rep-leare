@@ -1,0 +1,15 @@
+---
+import { getCollection } from 'astro:content';
+
+const refs = (await getCollection('references')).filter(r => r.data.status === 'published');
+---
+
+<h1>References</h1>
+<ul>
+  {refs.map(ref => (
+    <li>
+      <a href={ref.data.url ?? `/references/${ref.slug}`}>{ref.data.title}</a>
+      {ref.data.author && <> - {ref.data.author}</>}
+    </li>
+  ))}
+</ul>

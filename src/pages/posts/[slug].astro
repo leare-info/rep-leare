@@ -1,0 +1,39 @@
+---
+import { getCollection } from 'astro:content';
+
+// tell Astro to pre-build all posts
+export async function getStaticPaths() {
+  const posts = await getCollection('posts');
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post }, // pass post down
+  }));
+}
+
+const { post } = Astro.props;   // we get the post we passed in
+const { Content } = await post.render();
+const data = post.data;         // <-- get frontmatter here directly
+
+// get references for this post
+const allRefs = await getCollection('references');
+const refs = data?.references
+  ? allRefs.filter((r) => data.references.includes(r.slug))
+  : [];
+---
+
+<main class="prose mx-auto py-8">
+  <h1>{data?.title}</h1>
+
+  <Content />
+
+  {refs.length > 0 && (
+    <section class="mt-12">
+      <h2>References</h2>
+      <ul>
+        {refs.map((r) => (
+          <li><a href={`/references/${r.slug}`}>{r.data.title}</a></li>
+        ))}
+      </ul>
+    </section>
+  )}
+</main>
