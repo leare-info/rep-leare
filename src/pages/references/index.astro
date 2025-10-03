@@ -1,0 +1,20 @@
+---
+import { getCollection } from 'astro:content';
+
+const refs = await getCollection('references');
+---
+
+<main class="prose mx-auto py-8">
+  <h1>References</h1>
+  <ul>
+    {refs.map((r) => (
+      <li>
+        <a href={`/references/${r.slug}`}>{r.data.title}</a>
+        {r.data.summary && <p class="text-sm text-gray-600">{r.data.summary}</p>}
+        {r.data.tags && r.data.tags.length > 0 && (
+          <p class="text-xs text-gray-500">{r.data.tags.join(", ")}</p>
+        )}
+      </li>
+    ))}
+  </ul>
+</main>
