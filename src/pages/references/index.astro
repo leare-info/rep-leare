@@ -1,7 +1,9 @@
 ---
 import { getCollection } from 'astro:content';
 
-const refs = await getCollection('references');
+const refs = (await getCollection('references')).sort((a, b) => {
+  return new Date(b.data.last_checked || b.data.date) - new Date(a.data.last_checked || a.data.date);
+});
 ---
 
 <main class="prose mx-auto py-8">
@@ -10,7 +12,9 @@ const refs = await getCollection('references');
     {refs.map((r) => (
       <li>
         <a href={`/references/${r.slug}`}>{r.data.title}</a>
-        {r.data.summary && <p class="text-sm text-gray-600">{r.data.summary}</p>}
+        {r.data.summary && (
+          <p class="text-sm text-gray-600">{r.data.summary}</p>
+        )}
         {r.data.tags && r.data.tags.length > 0 && (
           <p class="text-xs text-gray-500">{r.data.tags.join(", ")}</p>
         )}

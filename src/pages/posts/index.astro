@@ -1,7 +1,8 @@
 ---
 import { getCollection } from 'astro:content';
 
-const posts = await getCollection('posts');
+const posts = (await getCollection('posts')).sort((a, b) => b.data.date - a.data.date);
+
 ---
 
 <main class="prose mx-auto py-8">
