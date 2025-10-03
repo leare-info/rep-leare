@@ -16,6 +16,8 @@ const data = ref.data;
 
 <main class="prose mx-auto py-8">
   <h1>{data.title}</h1>
+  {data.author && <p class="text-lg text-gray-700">{data.author}</p>}
+  {data.summary && <p class="text-lg text-gray-700">{data.summary}</p>}
 
   {data.url && (
     <p>
@@ -33,4 +35,11 @@ const data = ref.data;
       <p>{data.curation_notes}</p>
     </section>
   )}
+  
+  {data.tags && data.tags.length > 0 && (
+    <p class="mt-2 text-sm text-gray-600">
+    {data.tags.join(", ")}
+    </p>
+  )}
+
 </main>
